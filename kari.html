@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kari — rosa amarilla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F2E9D3;
+    --paper-edge: #E1D2A9;
+    --paper-card: #FAF3E2;
+    --ink: #302B1A;
+    --ink-soft: #6E6642;
+    --gold: #D6A429;
+    --gold-deep: #9C7315;
+    --gold-pale: #EED89A;
+    --sage: #74804C;
+    --sage-deep: #4E5732;
+    --rust: #8E4B25;
+    --brown-deep: #5B3419;
+    --shadow: rgba(48, 43, 26, 0.20);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #201D14;
+      --paper-edge: #15130D;
+      --paper-card: #29251A;
+      --ink: #EEE6CE;
+      --ink-soft: #BBAF87;
+      --gold: #E7BB49;
+      --gold-deep: #F2CE72;
+      --gold-pale: #6E5726;
+      --sage: #9CAE74;
+      --sage-deep: #7C8C57;
+      --rust: #CE8E63;
+      --brown-deep: #2E1A0C;
+      --shadow: rgba(0, 0, 0, 0.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #201D14; --paper-edge: #15130D; --paper-card: #29251A;
+    --ink: #EEE6CE; --ink-soft: #BBAF87; --gold: #E7BB49; --gold-deep: #F2CE72;
+    --gold-pale: #6E5726; --sage: #9CAE74; --sage-deep: #7C8C57; --rust: #CE8E63;
+    --brown-deep: #2E1A0C; --shadow: rgba(0, 0, 0, 0.5); color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Cormorant Garamond", serif;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    display: flex;
+    justify-content: center;
+  }
+
+  main { width: 100%; max-width: 620px; padding: clamp(28px, 6vw, 56px) 20px 64px; }
+
+  .card {
+    background: var(--paper-card);
+    border: 1px solid var(--paper-edge);
+    border-radius: 6px;
+    box-shadow: 0 24px 48px var(--shadow);
+    padding: clamp(30px, 7vw, 50px) clamp(22px, 6vw, 44px);
+  }
+
+  .rose-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .rose-wrap::before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, var(--gold-pale) 0%, transparent 68%);
+    filter: blur(18px);
+    opacity: 0.55;
+    z-index: 0;
+  }
+
+  .rose-btn {
+    position: relative; z-index: 1;
+    background: none; border: none; padding: 0; cursor: pointer;
+    display: block;
+  }
+  .rose-btn:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 6px; border-radius: 50%; }
+
+  .hero-rose { display: block; width: min(240px, 64%); margin: 0 auto; transition: transform 0.4s ease, filter 0.4s ease; }
+  .hero-rose.is-bloomed { animation: bloom-pulse 0.9s ease; }
+  @keyframes bloom-pulse {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.08); filter: brightness(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  .rose-hint {
+    position: relative; z-index: 1;
+    text-align: center; font-style: italic; color: var(--ink-soft);
+    font-size: 1rem; margin: 6px 0 2px; transition: opacity 0.4s ease;
+  }
+  .rose-hint.is-hidden { opacity: 0; }
+
+  .rose-reveal {
+    position: relative; z-index: 1;
+    text-align: center; font-family: "Caveat", cursive;
+    font-size: clamp(2rem, 7vw, 2.6rem); color: var(--rust);
+    margin: 0 0 18px; opacity: 0; transform: translateY(8px) scale(0.92);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .rose-reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+
+  h1 {
+    text-align: center; font-weight: 500; font-style: italic;
+    font-size: clamp(2.3rem, 7vw, 3.2rem); margin: 8px 0 26px; letter-spacing: 0.01em;
+  }
+
+  .bouquet-wrap { display: flex; justify-content: center; margin: 0 0 36px; }
+  .bouquet { width: min(340px, 90%); height: auto; display: block; }
+
+  .note-tab { display: flex; justify-content: center; }
+  .note-tab button {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.02rem;
+    color: var(--ink); background: var(--paper); border: 1px solid var(--gold-deep);
+    border-radius: 999px; padding: 10px 24px; cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .note-tab button:hover { background: var(--gold-pale); }
+  .note-tab button:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+
+  .note-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.7s ease; margin-top: 4px; }
+  .note-panel.is-open { grid-template-rows: 1fr; }
+  .note-panel-inner { overflow: hidden; }
+
+  .letter {
+    margin-top: 28px; padding-top: 24px; border-top: 1px dashed var(--gold-deep);
+    font-family: "Caveat", cursive; font-size: 1.45rem; line-height: 1.55; color: var(--ink);
+  }
+  .letter p { margin: 0 0 15px; }
+  .signature { text-align: right; font-size: 1.6rem; margin-top: 6px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .note-panel, .note-tab button, .hero-rose, .rose-hint, .rose-reveal { transition: none; animation: none; }
+  }
+  @media (max-width: 420px) {
+    .letter { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="card">
+
+    <div class="rose-wrap">
+      <button class="rose-btn" id="rose-btn" aria-label="Toca la rosa para descubrir el mensaje">
+        <svg class="hero-rose" viewBox="0 0 300 380" aria-hidden="true">
+          <g transform="translate(150,150)">
+            <path d="M0,-6 C 8,44 -8,96 0,160" stroke="var(--sage-deep)" stroke-width="4.5" fill="none"/>
+            <path d="M0,58 C 28,52 42,68 48,92 C 24,92 6,84 0,58 Z" fill="var(--sage)" stroke="var(--sage-deep)" stroke-width="1.2"/>
+            <path d="M0,98 C -28,92 -42,108 -48,132 C -24,132 -6,124 0,98 Z" fill="var(--sage)" stroke="var(--sage-deep)" stroke-width="1.2"/>
+            <path d="M-4,20 l8,-6 l-2,10 z" fill="var(--sage-deep)"/>
+            <path d="M6,70 l8,-4 l-4,9 z" fill="var(--sage-deep)"/>
+
+            <g fill="var(--gold-pale)" stroke="var(--gold-deep)" stroke-width="1.3">
+              <g transform="rotate(0)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(45)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(90)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(135)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(180)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(225)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(270)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(315)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+            </g>
+
+            <g fill="var(--gold)" stroke="var(--gold-deep)" stroke-width="1.1">
+              <g transform="rotate(30) scale(0.72)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(90) scale(0.72)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(150) scale(0.72)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(210) scale(0.72)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(270) scale(0.72)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(330) scale(0.72)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+            </g>
+
+            <g fill="var(--gold-deep)" stroke="var(--rust)" stroke-width="1">
+              <g transform="rotate(0) scale(0.46)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(72) scale(0.46)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(144) scale(0.46)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(216) scale(0.46)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+              <g transform="rotate(288) scale(0.46)"><path d="M0,0 C -18,-14 -24,-40 -11,-60 C -5,-70 5,-70 11,-60 C 24,-40 18,-14 0,0 Z"/></g>
+            </g>
+
+            <circle r="5" fill="var(--rust)"/>
+          </g>
+        </svg>
+      </button>
+      <p class="rose-hint" id="rose-hint">toca la rosa</p>
+      <p class="rose-reveal" id="rose-reveal" aria-live="polite">Te amo</p>
+    </div>
+
+    <h1>Kari</h1>
+
+    <div class="bouquet-wrap">
+      <svg class="bouquet" viewBox="0 0 400 400" aria-hidden="true">
+        <defs>
+          <radialGradient id="sfCenter" cx="35%" cy="35%" r="70%">
+            <stop offset="0%" style="stop-color:var(--gold-deep)"/>
+            <stop offset="55%" style="stop-color:var(--rust)"/>
+            <stop offset="100%" style="stop-color:var(--brown-deep)"/>
+          </radialGradient>
+
+          <g id="bq-leaf">
+            <path d="M0,0 C 16,-4 30,2 34,14 C 20,16 6,12 0,0 Z" fill="var(--sage)" stroke="var(--sage-deep)" stroke-width="1"/>
+            <path d="M2,2 C 12,4 20,8 26,13" fill="none" stroke="var(--sage-deep)" stroke-width="0.8" opacity="0.6"/>
+          </g>
+
+          <g id="bq-rose">
+            <g fill="var(--gold-pale)" stroke="var(--gold-deep)" stroke-width="1">
+              <g transform="rotate(0)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(60)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(120)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(180)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(240)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(300)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+            </g>
+            <g fill="var(--gold-deep)" stroke="var(--rust)" stroke-width="0.8">
+              <g transform="rotate(30) scale(0.55)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(102) scale(0.55)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(174) scale(0.55)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(246) scale(0.55)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+              <g transform="rotate(318) scale(0.55)"><path d="M0,0 C-11,-9 -15,-25 -7,-38 C-3,-44 3,-44 7,-38 C15,-25 11,-9 0,0 Z"/></g>
+            </g>
+            <circle r="3.5" fill="var(--rust)"/>
+          </g>
+
+          <g id="bq-sunflower">
+            <g fill="var(--gold)" stroke="var(--gold-deep)" stroke-width="1">
+              <g transform="rotate(0)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(30)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(60)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(90)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(120)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(150)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(180)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(210)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(240)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(270)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(300)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(330)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+            </g>
+            <g fill="var(--gold-pale)" stroke="var(--gold-deep)" stroke-width="0.8">
+              <g transform="rotate(18) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(54) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(90) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(126) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(162) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(198) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(234) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(270) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(306) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+              <g transform="rotate(342) scale(0.72)"><path d="M0,0 C-7,-16 -6,-34 0,-48 C6,-34 7,-16 0,0 Z"/></g>
+            </g>
+            <circle r="17" fill="url(#sfCenter)" stroke="var(--gold-deep)" stroke-width="1"/>
+            <g fill="var(--brown-deep)" opacity="0.5">
+              <circle cx="0" cy="0" r="1.3"/>
+              <circle cx="6" cy="0" r="1.1"/><circle cx="-6" cy="0" r="1.1"/><circle cx="0" cy="6" r="1.1"/><circle cx="0" cy="-6" r="1.1"/>
+              <circle cx="4.2" cy="4.2" r="1.1"/><circle cx="-4.2" cy="4.2" r="1.1"/><circle cx="4.2" cy="-4.2" r="1.1"/><circle cx="-4.2" cy="-4.2" r="1.1"/>
+              <circle cx="11" cy="0" r="1"/><circle cx="-11" cy="0" r="1"/><circle cx="0" cy="11" r="1"/><circle cx="0" cy="-11" r="1"/>
+              <circle cx="7.8" cy="7.8" r="1"/><circle cx="-7.8" cy="7.8" r="1"/><circle cx="7.8" cy="-7.8" r="1"/><circle cx="-7.8" cy="-7.8" r="1"/>
+            </g>
+          </g>
+        </defs>
+
+        <g fill="none" stroke="var(--sage-deep)" stroke-width="4">
+          <path d="M200,278 C198,220 200,150 200,90"/>
+          <path d="M200,278 C180,240 150,190 125,150"/>
+          <path d="M200,278 C215,235 250,180 270,140"/>
+          <path d="M200,278 C185,255 172,228 160,205"/>
+          <path d="M200,278 C215,250 232,222 245,197"/>
+        </g>
+
+        <use href="#bq-leaf" transform="translate(155,225) rotate(-25)"/>
+        <use href="#bq-leaf" transform="translate(240,220) rotate(200) scale(-1,1)"/>
+        <use href="#bq-leaf" transform="translate(198,250) rotate(-100)"/>
+
+        <use href="#bq-sunflower" transform="translate(125,150) rotate(-8) scale(1.0)"/>
+        <use href="#bq-sunflower" transform="translate(270,140) rotate(8) scale(0.92)"/>
+        <use href="#bq-sunflower" transform="translate(200,90) scale(1.2)"/>
+
+        <use href="#bq-rose" transform="translate(160,205) rotate(-8) scale(0.78)"/>
+        <use href="#bq-rose" transform="translate(245,197) rotate(9) scale(0.72)"/>
+
+        <g transform="translate(200,278)">
+          <path d="M-10,-6 C -34,-14 -40,10 -14,14 C -22,2 -14,-4 -10,-6 Z" fill="var(--rust)" stroke="var(--gold-deep)" stroke-width="1"/>
+          <path d="M10,-6 C 34,-14 40,10 14,14 C 22,2 14,-4 10,-6 Z" fill="var(--rust)" stroke="var(--gold-deep)" stroke-width="1"/>
+          <rect x="-9" y="-9" width="18" height="18" rx="3" fill="var(--rust)" stroke="var(--gold-deep)" stroke-width="1"/>
+          <path d="M-6,10 L-12,44 L-3,38 Z" fill="var(--rust)"/>
+          <path d="M6,10 L12,44 L3,38 Z" fill="var(--rust)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="note-tab">
+      <button id="toggle-note" aria-expanded="false" aria-controls="note-panel">Abrir la nota prensada aquí</button>
+    </div>
+
+    <div class="note-panel" id="note-panel">
+      <div class="note-panel-inner">
+        <div class="letter">
+          <p>Kari,</p>
+          <p>Esa vez que te vi, mi corazón sintió algo muy cálido, y creo que una parte de eso todavía sigue ahí. Yo seguiría diciéndote mi amor, mi vida, mi cielo, mi niña, porque muy dentro, mi corazón sigue diciendo que lo eres.</p>
+          <p>Ahora somos un vínculo de amistad y/o familia, y tal vez sea la palabra más honesta que hemos usado. Pero este vinculo o lazo no hace que te olvide y olvide los momentos que pasamos. Sigo queriéndote y amandote, aunque ahora trate de aceptar la actualidad.</p>
+          <p>No te escribo esto para pedirte que vuelvas. Solo para que sepas que, si el tiempo alguna vez acomoda las cosas distinto, yo no le cerraría la puerta a intentarlo otra vez. Y si no pasa, está bien también: me quedo con lo que fuimos, y con esto que todavía siento cuando pienso en ti.</p>
+          <p>Te extraño, Kari. Te extrañé más de lo que dije.</p>
+          <p class="signature">De: Gabriel</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  const roseBtn = document.getElementById('rose-btn');
+  const roseSvg = document.querySelector('.hero-rose');
+  const hint = document.getElementById('rose-hint');
+  const reveal = document.getElementById('rose-reveal');
+  roseBtn.addEventListener('click', () => {
+    roseSvg.classList.remove('is-bloomed');
+    void roseSvg.offsetWidth;
+    roseSvg.classList.add('is-bloomed');
+    hint.classList.add('is-hidden');
+    reveal.classList.add('is-visible');
+  });
+
+  const noteBtn = document.getElementById('toggle-note');
+  const notePanel = document.getElementById('note-panel');
+  noteBtn.addEventListener('click', () => {
+    const isOpen = notePanel.classList.toggle('is-open');
+    noteBtn.setAttribute('aria-expanded', String(isOpen));
+    noteBtn.textContent = isOpen ? 'Cerrar la nota' : 'Abrir la nota prensada aquí';
+  });
+</script>
+</body>
+</html>
